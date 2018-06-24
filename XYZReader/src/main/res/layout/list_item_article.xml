@@ -8,7 +8,6 @@
     android:layout_marginTop="4dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="?colorPrimaryLight"
     android:foreground="?selectableItemBackground">
 
     <LinearLayout
@@ -35,7 +34,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="16dp"
-            android:textColor="@color/ltgray" />
+            android:textColor="?textColorSecondary" />
 
         <TextView
             android:id="@+id/article_subtitle"
@@ -47,7 +46,7 @@
             android:paddingBottom="16dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:textColor="#6000" />
+            android:textColor="?textColorPrimary" />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

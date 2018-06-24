@@ -5,4 +5,6 @@
 
     <!--JB: Custom attributes to reference colors from styles.xml-->
     <attr name="colorPrimaryLight" format="reference" />
+    <attr name="textColorPrimary" format="reference" />
+    <attr name="textColorSecondary" format="reference" />
 </resources>
