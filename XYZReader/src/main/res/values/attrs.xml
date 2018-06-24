@@ -2,4 +2,7 @@
     <declare-styleable name="DrawInsetsFrameLayout">
         <attr name="insetBackground" format="color|reference" />
     </declare-styleable>
+
+    <!--JB: Custom attributes to reference colors from styles.xml-->
+    <attr name="colorPrimaryLight" format="reference" />
 </resources>
