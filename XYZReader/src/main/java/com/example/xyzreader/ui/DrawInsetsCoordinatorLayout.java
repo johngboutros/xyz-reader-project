@@ -12,8 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *//*
-
+ */
 
 package com.example.xyzreader.ui;
 
@@ -23,14 +22,14 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.view.WindowInsets;
-import android.widget.FrameLayout;
 
 import com.example.xyzreader.R;
 
 
-public class DrawInsetsFrameLayout extends FrameLayout {
+public class DrawInsetsCoordinatorLayout extends CoordinatorLayout {
     private Drawable mInsetBackground;
     private Drawable mTopInsetBackground;
     private Drawable mBottomInsetBackground;
@@ -40,27 +39,27 @@ public class DrawInsetsFrameLayout extends FrameLayout {
     private Rect mTempRect = new Rect();
     private OnInsetsCallback mOnInsetsCallback;
 
-    public DrawInsetsFrameLayout(Context context) {
+    public DrawInsetsCoordinatorLayout(Context context) {
         super(context);
         init(context, null, 0);
     }
 
-    public DrawInsetsFrameLayout(Context context, AttributeSet attrs) {
+    public DrawInsetsCoordinatorLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs, 0);
     }
 
-    public DrawInsetsFrameLayout(Context context, AttributeSet attrs, int defStyle) {
+    public DrawInsetsCoordinatorLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs, defStyle);
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
         final TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.DrawInsetsFrameLayout, defStyle, 0);
+                R.styleable.DrawInsetsCoordinatorLayout, defStyle, 0);
         assert a != null;
 
-        mInsetBackground = a.getDrawable(R.styleable.DrawInsetsFrameLayout_insetBackground);
+        mInsetBackground = a.getDrawable(R.styleable.DrawInsetsCoordinatorLayout_insetBackground);
 
         a.recycle();
     }
@@ -79,7 +78,7 @@ public class DrawInsetsFrameLayout extends FrameLayout {
     }
 
     @Override
-    protected void onAttachedToWindow() {
+    public void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             requestApplyInsets();
@@ -90,7 +89,7 @@ public class DrawInsetsFrameLayout extends FrameLayout {
     }
 
     @Override
-    protected void onDetachedFromWindow() {
+    public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mInsetBackground != null) {
             mInsetBackground.setCallback(null);
@@ -158,4 +157,3 @@ public class DrawInsetsFrameLayout extends FrameLayout {
         public void onInsetsChanged(Rect insets);
     }
 }
-*/
