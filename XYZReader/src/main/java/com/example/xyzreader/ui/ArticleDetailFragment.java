@@ -11,9 +11,11 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
@@ -22,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -60,6 +63,8 @@ public class ArticleDetailFragment extends Fragment implements
     private int mScrollY;
     private boolean mIsCard = false;
     private int mStatusBarFullOpacityBottom;
+    private Toolbar mToolBar;
+    private String mTitle = "";
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -134,6 +139,28 @@ public class ArticleDetailFragment extends Fragment implements
 //                updateStatusBar();
 //            }
 //        });
+
+        mToolBar = mRootView.findViewById(R.id.main_toolbar);
+
+        // Listen to the when the AppBarLayout expands and collapses.
+        AppBarLayout appBarLayout = mRootView.findViewById(R.id.main_appbar);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                LinearLayout metaBar = mRootView.findViewById(R.id.meta_bar);
+                if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+                    // collapsed state
+                    metaBar.setVisibility(View.GONE);
+                    mToolBar.setTitle(mTitle);
+                } else if (verticalOffset == 0) {
+                    // expanded state
+                } else {
+                    // somewhere in between
+                    mToolBar.setTitle("");
+                    metaBar.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
         mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
@@ -212,6 +239,7 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
             mRootView.animate().alpha(1);
+            mTitle = mCursor.getString(ArticleLoader.Query.TITLE);
             titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
