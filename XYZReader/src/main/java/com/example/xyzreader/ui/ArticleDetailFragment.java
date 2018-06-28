@@ -70,6 +70,10 @@ public class ArticleDetailFragment extends Fragment implements
     // Most time functions can only handle 1902 - 2037
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
 
+    private CharSequence mTitle;
+    private CharSequence mByLine;
+    private Bitmap mBitmap;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -143,16 +147,6 @@ public class ArticleDetailFragment extends Fragment implements
 
         mStatusBarColorDrawable = new ColorDrawable(0);
 
-        mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
-                        .setType("text/plain")
-                        .setText("Some sample text")
-                        .getIntent(), getString(R.string.action_share)));
-            }
-        });
-
         bindViews();
         updateStatusBar();
         return mRootView;
@@ -210,27 +204,27 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
             mRootView.animate().alpha(1);
-            getActivityCast().setToolbarTitle(mCursor.getString(ArticleLoader.Query.TITLE));
-            getActivityCast().setHeaderTitle(mCursor.getString(ArticleLoader.Query.TITLE));
+            mTitle = mCursor.getString(ArticleLoader.Query.TITLE);
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
-                getActivityCast().setHeaderByLineText(Html.fromHtml(
+                mByLine = Html.fromHtml(
                         DateUtils.getRelativeTimeSpanString(
                                 publishedDate.getTime(),
                                 System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
                                 DateUtils.FORMAT_ABBREV_ALL).toString()
                                 + " by <font color='#ffffff'>"
                                 + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                                + "</font>"));
+                                + "</font>");
 
             } else {
                 // If date is before 1902, just show the string
-                getActivityCast().setHeaderByLineText(Html.fromHtml(
+                mByLine = Html.fromHtml(
                         outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
                         + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                                + "</font>"));
+                                + "</font>");
 
             }
+            updateActivity();
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
@@ -240,10 +234,10 @@ public class ArticleDetailFragment extends Fragment implements
                             if (bitmap != null) {
                                 Palette p = Palette.generate(bitmap, 12);
                                 mMutedColor = p.getDarkMutedColor(0xFF333333);
-                                getActivityCast().setPhoto(imageContainer.getBitmap());
-                                getActivityCast().setToolbarColor(mMutedColor);
+                                mBitmap = imageContainer.getBitmap();
 //                                mRootView.findViewById(R.id.meta_bar)
 //                                        .setBackgroundColor(mMutedColor);
+                                updateActivity();
                                 updateStatusBar();
                             }
                         }
@@ -255,10 +249,35 @@ public class ArticleDetailFragment extends Fragment implements
                     });
         } else {
             mRootView.setVisibility(View.GONE);
-            getActivityCast().setHeaderTitle("N/A");
-            getActivityCast().setHeaderByLineText("N/A");
-            bodyView.setText("N/A");
+            mTitle = "";
+            mByLine = "";
+            bodyView.setText("");
+            updateActivity();
 
+        }
+    }
+
+    private boolean shouldUpdateActivity() {
+        boolean activityExists = getActivityCast() != null;
+        boolean userVisibleHint = getUserVisibleHint();
+        return activityExists && userVisibleHint;
+    }
+
+    private void updateActivity() {
+        if (shouldUpdateActivity()) {
+            getActivityCast().setHeaderTitle(mTitle);
+            getActivityCast().setToolbarTitle(mTitle);
+            getActivityCast().setHeaderByLineText(mByLine);
+            getActivityCast().setToolbarColor(mMutedColor);
+            getActivityCast().setPhoto(mBitmap);
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            updateActivity();
         }
     }
 

@@ -7,7 +7,8 @@
     <com.example.xyzreader.ui.ObservableScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="true">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -91,16 +92,6 @@
             </com.example.xyzreader.ui.MaxWidthLinearLayout>
         </FrameLayout>
     </com.example.xyzreader.ui.ObservableScrollView>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/share_fab"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_share"
-        app:layout_anchor="@id/main.appbar"
-        app:layout_anchorGravity="bottom|right|end"
-        />
 
     <!--<ImageButton android:id="@+id/share_fab"-->
         <!--android:stateListAnimator="@anim/fab_state_list_anim"-->

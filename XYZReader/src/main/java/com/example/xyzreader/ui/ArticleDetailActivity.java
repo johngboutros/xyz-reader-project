@@ -3,6 +3,7 @@ package com.example.xyzreader.ui;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -47,12 +49,15 @@ public class ArticleDetailActivity extends AppCompatActivity
     private View mUpButton;
 
     private Toolbar mToolBar;
-    private String mTitle = "";
+    private CharSequence mTitle = "";
 
     private TextView mTitleView;
     private TextView mBylineView;
 
     private ImageView mPhotoView;
+
+    // JB: To keep primary fragment
+    ArticleDetailFragment mPrimaryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +157,17 @@ public class ArticleDetailActivity extends AppCompatActivity
         mBylineView = findViewById(R.id.article_byline);
         mBylineView.setMovementMethod(new LinkMovementMethod());
         mPhotoView = findViewById(R.id.photo);
+
+        findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(Intent.createChooser(ShareCompat.IntentBuilder
+                        .from(ArticleDetailActivity.this)
+                        .setType("text/plain")
+                        .setText("Some sample text")
+                        .getIntent(), getString(R.string.action_share)));
+            }
+        });
     }
 
     @Override
@@ -207,9 +223,17 @@ public class ArticleDetailActivity extends AppCompatActivity
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
             super.setPrimaryItem(container, position, object);
             ArticleDetailFragment fragment = (ArticleDetailFragment) object;
+            // JB: Update fragment state
+            if (mPrimaryFragment != null) {
+                mPrimaryFragment.setUserVisibleHint(false);
+            }
             if (fragment != null) {
                 mSelectedItemUpButtonFloor = fragment.getUpButtonFloor();
                 updateUpButtonPosition();
+
+                // JB: Update fragment state
+                mPrimaryFragment = fragment;
+                mPrimaryFragment.setUserVisibleHint(true);
             }
         }
 
@@ -225,7 +249,7 @@ public class ArticleDetailActivity extends AppCompatActivity
         }
     }
 
-    public void setToolbarTitle(String title) {
+    public void setToolbarTitle(CharSequence title) {
         this.mTitle = title;
     }
 
