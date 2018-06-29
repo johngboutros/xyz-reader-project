@@ -19,6 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -56,8 +58,10 @@ public class ArticleDetailActivity extends AppCompatActivity
 
     private ImageView mPhotoView;
 
-    // JB: To keep primary fragment
-    ArticleDetailFragment mPrimaryFragment;
+    private ArticleDetailFragment mPrimaryFragment;
+    private boolean mIsAppBarExpanded;
+    private Menu mCollapsedMenu;
+    private LinearLayout mMetaBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,26 +73,29 @@ public class ArticleDetailActivity extends AppCompatActivity
         }
         setContentView(R.layout.activity_article_detail);
 
-        init();
-
         mToolBar = findViewById(R.id.main_toolbar);
+        mMetaBar = findViewById(R.id.meta_bar);
+
+        init();
 
         // Listen to the when the AppBarLayout expands and collapses.
         AppBarLayout appBarLayout = findViewById(R.id.main_appbar);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                LinearLayout metaBar = findViewById(R.id.meta_bar);
+                int appbarExpandedHeightThreshold = appBarLayout.getTotalScrollRange()
+                        - mToolBar.getHeight();
                 if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
-                    // collapsed state
-                    metaBar.setVisibility(View.GONE);
-                    mToolBar.setTitle(mTitle);
+                    // fully collapsed state
+                    appbarCollapsed();
                 } else if (verticalOffset == 0) {
-                    // expanded state
+                    // full expanded state
+                } else if (Math.abs(verticalOffset) > appbarExpandedHeightThreshold) {
+                    // about to collapse
+                    appbarCollapsed();
                 } else {
                     // somewhere in between
-                    mToolBar.setTitle("");
-                    metaBar.setVisibility(View.VISIBLE);
+                    appbarExpanded();
                 }
             }
         });
@@ -161,13 +168,33 @@ public class ArticleDetailActivity extends AppCompatActivity
         findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(Intent.createChooser(ShareCompat.IntentBuilder
-                        .from(ArticleDetailActivity.this)
-                        .setType("text/plain")
-                        .setText("Some sample text")
-                        .getIntent(), getString(R.string.action_share)));
+                share();
             }
         });
+
+        setSupportActionBar(mToolBar);
+    }
+
+    private void share() {
+        startActivity(Intent.createChooser(ShareCompat.IntentBuilder
+                .from(ArticleDetailActivity.this)
+                .setType("text/plain")
+                .setText("Some sample text")
+                .getIntent(), getString(R.string.action_share)));
+    }
+
+    private void appbarExpanded() {
+        mIsAppBarExpanded = true;
+        mToolBar.setTitle("");
+        mMetaBar.setVisibility(View.VISIBLE);
+        invalidateOptionsMenu();
+    }
+
+    private void appbarCollapsed() {
+        mIsAppBarExpanded = false;
+        mMetaBar.setVisibility(View.GONE);
+        mToolBar.setTitle(mTitle);
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -270,5 +297,35 @@ public class ArticleDetailActivity extends AppCompatActivity
 
     public void setPhoto(Bitmap bitmap) {
         mPhotoView.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.detail, menu);
+        mCollapsedMenu = menu;
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        if (mCollapsedMenu != null && (!mIsAppBarExpanded)) {
+            //collapsed
+            mCollapsedMenu.add(getString(R.string.action_share))
+                    .setIcon(R.drawable.ic_share)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        } else {
+            //expanded
+        }
+        return super.onPrepareOptionsMenu(mCollapsedMenu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getTitle().equals(getString(R.string.action_share))) {
+            share();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
