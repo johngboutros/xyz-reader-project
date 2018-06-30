@@ -172,7 +172,7 @@ public class ArticleDetailActivity extends AppCompatActivity
         });
 
         setSupportActionBar(mToolBar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void share() {
