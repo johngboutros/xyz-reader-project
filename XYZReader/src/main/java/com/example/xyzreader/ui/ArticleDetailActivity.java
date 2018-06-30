@@ -172,6 +172,7 @@ public class ArticleDetailActivity extends AppCompatActivity
         });
 
         setSupportActionBar(mToolBar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void share() {
@@ -186,6 +187,9 @@ public class ArticleDetailActivity extends AppCompatActivity
         mIsAppBarExpanded = true;
         mToolBar.setTitle("");
         mMetaBar.setVisibility(View.VISIBLE);
+        mToolBar.setNavigationIcon(null);
+        mToolBar.setNavigationContentDescription("");
+        mUpButtonContainer.setVisibility(View.VISIBLE);
         invalidateOptionsMenu();
     }
 
@@ -193,6 +197,9 @@ public class ArticleDetailActivity extends AppCompatActivity
         mIsAppBarExpanded = false;
         mMetaBar.setVisibility(View.GONE);
         mToolBar.setTitle(mTitle);
+        mToolBar.setNavigationIcon(R.drawable.ic_arrow_back);
+        mToolBar.setNavigationContentDescription(R.string.up);
+        mUpButtonContainer.setVisibility(View.GONE);
         invalidateOptionsMenu();
     }
 
@@ -308,7 +315,7 @@ public class ArticleDetailActivity extends AppCompatActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
-        if (mCollapsedMenu != null && (!mIsAppBarExpanded)) {
+        if (mCollapsedMenu != null && !mIsAppBarExpanded) {
             //collapsed
             mCollapsedMenu.add(getString(R.string.action_share))
                     .setIcon(R.drawable.ic_share)
@@ -321,7 +328,7 @@ public class ArticleDetailActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getTitle().equals(getString(R.string.action_share))) {
+        if (getString(R.string.action_share).equals(item.getTitle())) {
             share();
             return true;
         }

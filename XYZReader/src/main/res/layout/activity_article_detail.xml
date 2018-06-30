@@ -81,6 +81,8 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
             </android.support.v7.widget.Toolbar>
+                <!--app:navigationIcon="@drawable/ic_arrow_back"-->
+                <!--android:contentDescription="@string/up"-->
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
