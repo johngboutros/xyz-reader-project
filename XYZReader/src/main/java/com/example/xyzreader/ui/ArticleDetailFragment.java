@@ -13,10 +13,13 @@ import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.format.DateUtils;
+import android.transition.Slide;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -93,6 +96,16 @@ public class ArticleDetailFragment extends Fragment implements
         mStatusBarFullOpacityBottom = getResources().getDimensionPixelSize(
                 R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
+
+        /*
+         * Enter animations
+         */
+        Slide slideUp = new Slide(Gravity.BOTTOM);
+        slideUp.addTarget(R.id.article_body);
+        slideUp.setInterpolator(AnimationUtils.loadInterpolator(getActivity(),
+                android.R.interpolator.linear_out_slow_in));
+        slideUp.setDuration(getResources().getInteger(R.integer.anim_duration));
+        getActivity().getWindow().setEnterTransition(slideUp);
     }
 
     public ArticleDetailActivity getActivityCast() {

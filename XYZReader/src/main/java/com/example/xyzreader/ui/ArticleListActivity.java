@@ -1,5 +1,6 @@
 package com.example.xyzreader.ui;
 
+import android.app.ActivityOptions;
 import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -146,8 +147,22 @@ public class ArticleListActivity extends AppCompatActivity implements
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
+
+                    // Get shared photo view
+                    View sharedPhoto = view.findViewById(R.id.thumbnail);
+                    sharedPhoto.setTransitionName(getString(R.string.article_photo_transition_name));
+
+                    // Start activity with transition
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition())));
+                    Bundle bundle = ActivityOptions
+                            .makeSceneTransitionAnimation(ArticleListActivity.this
+                                    , sharedPhoto, sharedPhoto.getTransitionName())
+                            .toBundle();
+                    startActivity(intent, bundle);
+
+//                    startActivity(new Intent(Intent.ACTION_VIEW,
+//                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
                 }
             });
             return vh;

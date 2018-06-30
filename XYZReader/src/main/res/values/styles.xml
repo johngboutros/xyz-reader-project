@@ -18,12 +18,17 @@
 <resources>
 
     <style name="Theme.Bacon" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <!--colors-->
         <item name="colorPrimary">@color/grey_800</item>
         <item name="colorPrimaryDark">@color/grey_900</item>
         <item name="colorPrimaryLight">@color/grey_500</item>
         <item name="colorAccent">@color/yellow_A400</item>
         <item name="textColorPrimary">@color/grey_900</item>
         <item name="textColorSecondary">@color/grey_600</item>
+        <!--animations-->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowExitTransition">@transition/slide_left</item>
+        <item name="android:windowEnterTransition">@transition/slide_left</item>
     </style>
 
     <style name="Theme.Bacon.Detail">
@@ -32,14 +37,14 @@
 
     <style name="Theme.Bacon.Detail.HeaderTitle" parent="android:TextAppearance.Large">
         <item name="android:fontFamily">"sans-serif-condensed"</item>
-        <item name="android:textColor">#fff</item>
+        <item name="android:textColor">@color/header_title</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/detail_title_text_size</item>
         <item name="android:lineSpacingMultiplier">0.9</item>
     </style>
 
     <style name="Theme.Bacon.Detail.HeaderSubtitle" parent="android:TextAppearance.Small">
-        <item name="android:textColor">#8fff</item>
+        <item name="android:textColor">@color/header_subtitle</item>
     </style>
 
     <style name="Theme.Bacon.Detail.BodyText" parent="android:TextAppearance.Medium">

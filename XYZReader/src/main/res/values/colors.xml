@@ -23,6 +23,9 @@
     <color name="theme_accent">#04561A</color>
     <color name="ltgray">#ffe0e0e0</color>
 
+    <color name="header_title">#fff</color>
+    <color name="header_subtitle">#8fff</color>
+
     <color name="grey">#9E9E9E</color>
     <color name="grey_50">#FAFAFA</color>
     <color name="grey_100">#F5F5F5</color>
