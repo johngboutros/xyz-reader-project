@@ -85,16 +85,15 @@ public class ArticleDetailActivity extends AppCompatActivity
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 int appbarExpandedHeightThreshold = appBarLayout.getTotalScrollRange()
                         - mToolBar.getHeight();
-                if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
-                    // fully collapsed state
-                    appbarCollapsed();
-                } else if (verticalOffset == 0) {
-                    // full expanded state
-                } else if (Math.abs(verticalOffset) > appbarExpandedHeightThreshold) {
+                // fully collapsed state
+                // Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange())
+                // full expanded state
+                // verticalOffset == 0)
+                if (Math.abs(verticalOffset) > appbarExpandedHeightThreshold) {
                     // about to collapse
                     appbarCollapsed();
                 } else {
-                    // somewhere in between
+                    // somewhere between collapsed and expanded
                     appbarExpanded();
                 }
             }
