@@ -160,9 +160,6 @@ public class ArticleListActivity extends AppCompatActivity implements
                                     , sharedPhoto, sharedPhoto.getTransitionName())
                             .toBundle();
                     startActivity(intent, bundle);
-
-//                    startActivity(new Intent(Intent.ACTION_VIEW,
-//                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
                 }
             });
             return vh;

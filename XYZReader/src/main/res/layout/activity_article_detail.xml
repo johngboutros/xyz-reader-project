@@ -58,20 +58,12 @@
                     android:layout_height="wrap_content"
                     style="@style/Theme.Bacon.Detail.HeaderTitle"
                     android:paddingBottom="@dimen/detail_metabar_title_bottom_padding" />
-                    <!--style="?android:attr/textAppearanceLarge"-->
-                    <!--android:fontFamily="sans-serif-condensed"-->
-                    <!--android:textColor="#fff"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:textSize="@dimen/detail_title_text_size"-->
-                    <!--android:lineSpacingMultiplier="0.9"-->
 
                 <TextView
                     android:id="@+id/article_byline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Theme.Bacon.Detail.HeaderSubtitle"/>
-                    <!--style="?android:attr/textAppearanceSmall"-->
-                    <!--android:textColor="#8fff"-->
             </LinearLayout>
 
             <android.support.v7.widget.Toolbar
@@ -82,8 +74,6 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
             </android.support.v7.widget.Toolbar>
-                <!--app:navigationIcon="@drawable/ic_arrow_back"-->
-                <!--android:contentDescription="@string/up"-->
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
@@ -93,15 +83,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    <!--android:nestedScrollingEnabled="true"-->
 
     <FrameLayout
         android:id="@+id/up_container"
         android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize">
-        <!--app:layout_collapseMode="pin"-->
-        <!--android:fitsSystemWindows="true"-->
 
         <ImageButton
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"

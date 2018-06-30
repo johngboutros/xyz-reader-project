@@ -25,16 +25,6 @@
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <!--<ImageView-->
-            <!--android:id="@+id/main.backdrop"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:scaleType="centerCrop"-->
-            <!--android:fitsSystemWindows="true"-->
-            <!--android:src="@drawable/material_flat"-->
-            <!--app:layout_collapseMode="parallax"-->
-            <!--/>-->
-
             <android.support.v7.widget.Toolbar
                 android:id="@+id/main.toolbar"
                 android:layout_width="match_parent"
@@ -59,9 +49,6 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
-        <!--android:nestedScrollingEnabled="true"-->
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
@@ -72,12 +59,4 @@
             android:scrollbarStyle="outsideOverlay" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_margin="@dimen/activity_horizontal_margin"-->
-    <!--android:src="@drawable/ic_comment_24dp"-->
-    <!--app:layout_anchor="@id/main.appbar"-->
-    <!--app:layout_anchorGravity="bottom|right|end"-->
-    <!--/>-->
 </android.support.design.widget.CoordinatorLayout>
