@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/detail_photo_height"
         android:fitsSystemWindows="true"
+        android:elevation="@dimen/appbar_elevation"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
