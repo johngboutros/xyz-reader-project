@@ -15,6 +15,7 @@ import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.transition.Slide;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,8 +24,9 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 
@@ -65,7 +67,8 @@ public class ArticleDetailFragment extends Fragment implements
 
     private CharSequence mTitle;
     private CharSequence mByLine;
-    private Bitmap mBitmap;
+    private String mPhotoUrl;
+    private float mAspectRatio = 1.5f;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -214,34 +217,37 @@ public class ArticleDetailFragment extends Fragment implements
                                 + "</font>");
 
             }
-            updateActivity();
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
-            ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
-                    .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
-                        @Override
-                        public void onResponse(final ImageLoader.ImageContainer imageContainer, boolean b) {
-                            Bitmap bitmap = imageContainer.getBitmap();
-                            if (bitmap != null) {
-                                new Palette.Builder(bitmap)
-                                        .maximumColorCount(12)
-                                        .generate(new Palette.PaletteAsyncListener() {
-                                            @Override
-                                            public void onGenerated(@NonNull Palette palette) {
-                                                mMutedColor = palette
-                                                        .getDarkMutedColor(0xFF333333);
-                                                mBitmap = imageContainer.getBitmap();
-                                                updateActivity();
-                                                updateStatusBar();
-                                            }
-                                        });
-                            }
-                        }
+            mPhotoUrl = mCursor.getString(ArticleLoader.Query.PHOTO_URL);
+            mAspectRatio = mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO);
+            updateActivity();
 
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-
-                        }
-                    });
+//            ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
+//                    .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
+//                        @Override
+//                        public void onResponse(final ImageLoader.ImageContainer imageContainer, boolean b) {
+//                            Bitmap bitmap = imageContainer.getBitmap();
+//                            if (bitmap != null) {
+//                                new Palette.Builder(bitmap)
+//                                        .maximumColorCount(12)
+//                                        .generate(new Palette.PaletteAsyncListener() {
+//                                            @Override
+//                                            public void onGenerated(@NonNull Palette palette) {
+//                                                mMutedColor = palette
+//                                                        .getDarkMutedColor(0xFF333333);
+//                                                mBitmap = imageContainer.getBitmap();
+//                                                updateActivity();
+//                                                updateStatusBar();
+//                                            }
+//                                        });
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onErrorResponse(VolleyError volleyError) {
+//
+//                        }
+//                    });
         } else {
             mRootView.setVisibility(View.GONE);
             mTitle = "";
@@ -263,9 +269,44 @@ public class ArticleDetailFragment extends Fragment implements
             getActivityCast().setHeaderTitle(mTitle);
             getActivityCast().setToolbarTitle(mTitle);
             getActivityCast().setHeaderByLineText(mByLine);
-            getActivityCast().setToolbarColor(mMutedColor);
-            getActivityCast().setPhoto(mBitmap);
+            updateActivityImage(mPhotoUrl, mAspectRatio);
         }
+    }
+
+    private void updateActivityImage(String imageUrl, float aspectRatio) {
+
+        SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(final Bitmap bitmap, GlideAnimation glideAnimation) {
+                if (bitmap != null) {
+                    new Palette.Builder(bitmap)
+                            .maximumColorCount(12)
+                            .generate(new Palette.PaletteAsyncListener() {
+                                @Override
+                                public void onGenerated(@NonNull Palette palette) {
+                                    mMutedColor = palette
+                                            .getDarkMutedColor(0xFF333333);
+                                    getActivityCast().getPhotoView().setImageBitmap(bitmap);
+                                    getActivityCast().setToolbarColor(mMutedColor);
+                                    updateStatusBar();
+                                }
+                            });
+                }
+            }
+        };
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int measuredWidth = displayMetrics.widthPixels;
+        int measuredHeight  = (int) (measuredWidth / aspectRatio);
+
+        Glide.with(this)
+                .load(imageUrl)
+                .asBitmap()
+                // resizes the image to these dimensions (in pixel). does not respect aspect ratio
+                .override(measuredWidth, measuredHeight)
+                .into(target);
     }
 
     @Override

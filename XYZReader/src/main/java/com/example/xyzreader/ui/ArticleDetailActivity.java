@@ -2,7 +2,6 @@ package com.example.xyzreader.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -302,8 +301,8 @@ public class ArticleDetailActivity extends AppCompatActivity
         mBylineView.setText(text);
     }
 
-    public void setPhoto(Bitmap bitmap) {
-        mPhotoView.setImageBitmap(bitmap);
+    public ImageView getPhotoView() {
+        return mPhotoView;
     }
 
     @Override
