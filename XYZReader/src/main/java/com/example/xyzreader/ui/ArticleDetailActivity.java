@@ -62,6 +62,8 @@ public class ArticleDetailActivity extends AppCompatActivity
     private Menu mCollapsedMenu;
     private LinearLayout mMetaBar;
 
+    static final String EXTRA_PHOTO_TRANSITION_NAME = "extra_photo_transition_name";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +77,9 @@ public class ArticleDetailActivity extends AppCompatActivity
         mToolBar = findViewById(R.id.main_toolbar);
         mMetaBar = findViewById(R.id.meta_bar);
 
-        init();
+        String photoTransitionName = getIntent().getStringExtra(EXTRA_PHOTO_TRANSITION_NAME);
+
+        init(photoTransitionName);
 
         // Listen to the when the AppBarLayout expands and collapses.
         AppBarLayout appBarLayout = findViewById(R.id.main_appbar);
@@ -157,11 +161,13 @@ public class ArticleDetailActivity extends AppCompatActivity
         }
     }
 
-    private void init() {
+    private void init(String photoTransitionName) {
         mTitleView = findViewById(R.id.article_title);
         mBylineView = findViewById(R.id.article_byline);
         mBylineView.setMovementMethod(new LinkMovementMethod());
         mPhotoView = findViewById(R.id.photo);
+
+        mPhotoView.setTransitionName(photoTransitionName);
 
         findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
             @Override

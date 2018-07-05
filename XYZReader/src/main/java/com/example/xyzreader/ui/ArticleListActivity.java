@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -145,17 +147,24 @@ public class ArticleListActivity extends AppCompatActivity implements
                 public void onClick(View view) {
 
                     // Get shared photo view
-                    View sharedPhoto = view.findViewById(R.id.thumbnail);
-                    sharedPhoto.setTransitionName(getString(R.string.article_photo_transition_name));
+                    ImageView sharedPhoto = view.findViewById(R.id.thumbnail);
+
+                    // Set photo's transitionName based on AdapterPosition
+                    sharedPhoto.setTransitionName(getString(R.string.article_photo_transition_name)
+                            + vh.getAdapterPosition());
 
                     // Start activity with transition
+                    // TODO put extra transitionName & Bitmap
+                    String transitionName = ViewCompat.getTransitionName(sharedPhoto);
                     Intent intent = new Intent(Intent.ACTION_VIEW,
                             ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition())));
-                    Bundle bundle = ActivityOptions
+                    ActivityOptions options = ActivityOptions
                             .makeSceneTransitionAnimation(ArticleListActivity.this
-                                    , sharedPhoto, sharedPhoto.getTransitionName())
-                            .toBundle();
-                    startActivity(intent, bundle);
+                                    , sharedPhoto, transitionName);
+                    intent.putExtra(ArticleDetailActivity.EXTRA_PHOTO_TRANSITION_NAME,
+                            transitionName);
+                    startActivity(intent, options.toBundle());
+//                    startActivity(intent);
                 }
             });
             return vh;
