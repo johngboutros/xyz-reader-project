@@ -11,5 +11,9 @@
 
     <string name="article_photo_transition_name" translatable="false">
         article_photo_transition_name</string>
+    <string name="article_title_transition_name" translatable="false">
+        article_title_transition_name</string>
+    <string name="article_subtitle_transition_name" translatable="false">
+        article_subtitle_transition_name</string>
 
 </resources>

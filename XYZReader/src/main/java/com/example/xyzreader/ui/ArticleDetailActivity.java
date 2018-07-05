@@ -1,18 +1,18 @@
 package com.example.xyzreader.ui;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.LoaderManager;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.ShareCompat;
-import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -62,8 +62,6 @@ public class ArticleDetailActivity extends AppCompatActivity
     private Menu mCollapsedMenu;
     private LinearLayout mMetaBar;
 
-    static final String EXTRA_PHOTO_TRANSITION_NAME = "extra_photo_transition_name";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,9 +75,7 @@ public class ArticleDetailActivity extends AppCompatActivity
         mToolBar = findViewById(R.id.main_toolbar);
         mMetaBar = findViewById(R.id.meta_bar);
 
-        String photoTransitionName = getIntent().getStringExtra(EXTRA_PHOTO_TRANSITION_NAME);
-
-        init(photoTransitionName);
+        init();
 
         // Listen to the when the AppBarLayout expands and collapses.
         AppBarLayout appBarLayout = findViewById(R.id.main_appbar);
@@ -102,9 +98,9 @@ public class ArticleDetailActivity extends AppCompatActivity
             }
         });
 
-        getSupportLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(0, null, this);
 
-        mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new MyPagerAdapter(getFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
         mPager.setPageMargin((int) TypedValue
@@ -161,13 +157,11 @@ public class ArticleDetailActivity extends AppCompatActivity
         }
     }
 
-    private void init(String photoTransitionName) {
+    private void init() {
         mTitleView = findViewById(R.id.article_title);
         mBylineView = findViewById(R.id.article_byline);
         mBylineView.setMovementMethod(new LinkMovementMethod());
         mPhotoView = findViewById(R.id.photo);
-
-        mPhotoView.setTransitionName(photoTransitionName);
 
         findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
             @Override

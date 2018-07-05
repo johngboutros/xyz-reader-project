@@ -63,12 +63,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Theme.Bacon.Detail.HeaderTitle"
+                    android:transitionName="@string/article_title_transition_name"
+                    tools:ignore="UnusedAttribute"
                     android:paddingBottom="@dimen/detail_metabar_title_bottom_padding" />
 
                 <TextView
                     android:id="@+id/article_byline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:transitionName="@string/article_subtitle_transition_name"
+                    tools:ignore="UnusedAttribute"
                     style="@style/Theme.Bacon.Detail.HeaderSubtitle"/>
             </LinearLayout>
 
