@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,15 +14,11 @@ import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.format.DateUtils;
-import android.transition.Slide;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -61,11 +56,11 @@ public class ArticleDetailFragment extends Fragment implements
     private boolean mIsCard = false;
     private int mStatusBarFullOpacityBottom;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
-    private SimpleDateFormat outputFormat = new SimpleDateFormat();
+    private final SimpleDateFormat outputFormat = new SimpleDateFormat();
     // Most time functions can only handle 1902 - 2037
-    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
+    private final GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
 
     private CharSequence mTitle;
     private CharSequence mByLine;
@@ -99,16 +94,6 @@ public class ArticleDetailFragment extends Fragment implements
         mStatusBarFullOpacityBottom = getResources().getDimensionPixelSize(
                 R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
-
-        /*
-         * Enter animations
-         */
-//        Slide slideUp = new Slide(Gravity.BOTTOM);
-//        slideUp.addTarget(R.id.article_body);
-//        slideUp.setInterpolator(AnimationUtils.loadInterpolator(getActivity(),
-//                android.R.interpolator.linear_out_slow_in));
-//        slideUp.setDuration(getResources().getInteger(R.integer.anim_duration));
-//        getActivity().getWindow().setEnterTransition(slideUp);
     }
 
     public ArticleDetailActivity getActivityCast() {
@@ -130,8 +115,7 @@ public class ArticleDetailFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
-        mDrawInsetsLayout = (DrawInsetsFrameLayout)
-                mRootView.findViewById(R.id.draw_insets_frame_layout);
+        mDrawInsetsLayout = mRootView.findViewById(R.id.draw_insets_frame_layout);
         mDrawInsetsLayout.setOnInsetsCallback(new DrawInsetsFrameLayout.OnInsetsCallback() {
             @Override
             public void onInsetsChanged(Rect insets) {
@@ -231,32 +215,6 @@ public class ArticleDetailFragment extends Fragment implements
             mAspectRatio = mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO);
             updateActivity();
 
-//            ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
-//                    .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
-//                        @Override
-//                        public void onResponse(final ImageLoader.ImageContainer imageContainer, boolean b) {
-//                            Bitmap bitmap = imageContainer.getBitmap();
-//                            if (bitmap != null) {
-//                                new Palette.Builder(bitmap)
-//                                        .maximumColorCount(12)
-//                                        .generate(new Palette.PaletteAsyncListener() {
-//                                            @Override
-//                                            public void onGenerated(@NonNull Palette palette) {
-//                                                mMutedColor = palette
-//                                                        .getDarkMutedColor(0xFF333333);
-//                                                mBitmap = imageContainer.getBitmap();
-//                                                updateActivity();
-//                                                updateStatusBar();
-//                                            }
-//                                        });
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onErrorResponse(VolleyError volleyError) {
-//
-//                        }
-//                    });
         } else {
             mRootView.setVisibility(View.GONE);
             mTitle = "";
@@ -358,13 +316,13 @@ public class ArticleDetailFragment extends Fragment implements
 
     public int getUpButtonFloor() {
         return 300;
-//        if (mPhotoContainerView == null || mPhotoView.getHeight() == 0) {
-//            return Integer.MAX_VALUE;
-//        }
-//
-//        // account for parallax
-//        return mIsCard
-//                ? (int) mPhotoContainerView.getTranslationY() + mPhotoView.getHeight() - mScrollY
-//                : mPhotoView.getHeight() - mScrollY;
+    //        if (mPhotoContainerView == null || mPhotoView.getHeight() == 0) {
+    //            return Integer.MAX_VALUE;
+    //        }
+    //
+    //        // account for parallax
+    //        return mIsCard
+    //                ? (int) mPhotoContainerView.getTranslationY() + mPhotoView.getHeight() - mScrollY
+    //                : mPhotoView.getHeight() - mScrollY;
     }
 }

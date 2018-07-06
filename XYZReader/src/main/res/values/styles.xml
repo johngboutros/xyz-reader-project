@@ -27,9 +27,6 @@
         <item name="textColorSecondary">@color/grey_600</item>
         <!--animations-->
         <item name="android:windowContentTransitions">true</item>
-        <!--FIXME Disabled transitions for debugging -->
-        <!--<item name="android:windowExitTransition">@transition/slide_left</item>-->
-        <!--<item name="android:windowEnterTransition">@transition/slide_left</item>-->
     </style>
 
     <style name="Theme.Bacon.Detail">
