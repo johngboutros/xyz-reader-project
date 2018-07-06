@@ -4,37 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.xyzreader.ui.ObservableScrollView
-        android:id="@+id/scrollview"
+    <!--<com.example.xyzreader.ui.ObservableScrollView-->
+    <!--android:id="@+id/scrollview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:nestedScrollingEnabled="true">-->
+
+    <!--<FrameLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+
+    <!--<com.example.xyzreader.ui.MaxWidthLinearLayout-->
+    <!--android:orientation="vertical"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:maxWidth="@dimen/detail_card_max_width"-->
+    <!--android:background="#fff"-->
+    <!--android:elevation="2dp">-->
+
+    <com.metalurgus.longtextview.LongTextView
+        android:id="@+id/article_body"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:nestedScrollingEnabled="true">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/detail_inner_top_margin"
+        android:layout_marginLeft="@dimen/detail_inner_horiz_margin"
+        android:layout_marginRight="@dimen/detail_inner_horiz_margin"
+        style="@style/Theme.Bacon.Detail.BodyText"
+        android:nestedScrollingEnabled="true" />
+    <!--android:paddingBottom="@dimen/detail_body_bottom_margin"-->
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.example.xyzreader.ui.MaxWidthLinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:maxWidth="@dimen/detail_card_max_width"
-                android:background="#fff"
-                android:elevation="2dp">
-
-                <TextView
-                    android:id="@+id/article_body"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/detail_inner_top_margin"
-                    android:layout_marginLeft="@dimen/detail_inner_horiz_margin"
-                    android:layout_marginRight="@dimen/detail_inner_horiz_margin"
-                    android:paddingBottom="@dimen/detail_body_bottom_margin"
-                    style="@style/Theme.Bacon.Detail.BodyText"/>
-
-            </com.example.xyzreader.ui.MaxWidthLinearLayout>
-        </FrameLayout>
-    </com.example.xyzreader.ui.ObservableScrollView>
+    <!--</com.example.xyzreader.ui.MaxWidthLinearLayout>-->
+    <!--</FrameLayout>-->
+    <!--</com.example.xyzreader.ui.ObservableScrollView>-->
 
 </com.example.xyzreader.ui.DrawInsetsFrameLayout>

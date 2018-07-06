@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.transition.Slide;
 import android.util.DisplayMetrics;
@@ -29,6 +30,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
+import com.metalurgus.longtextview.LongTextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -189,10 +191,12 @@ public class ArticleDetailFragment extends Fragment implements
             return;
         }
 
-        TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
+        LongTextView bodyView = mRootView.findViewById(R.id.article_body);
         // JB: Overrides style's android:fontFamily
-        // FIXME Disabled displaying article for debugging
-//        bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
+        // bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
+
+        // Set LongTextView's textSize
+        bodyView.setTextSize(getResources().getInteger(R.integer.article_text_size));
 
         if (mCursor != null) {
             mRootView.setAlpha(0);
@@ -218,8 +222,11 @@ public class ArticleDetailFragment extends Fragment implements
                                 + "</font>");
 
             }
-            // FIXME Disabled displaying article for debugging
-//            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
+            // Display article text
+            Spanned spanned = Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY)
+                    .replaceAll("(\r\n|\n)", "<br />"));
+            bodyView.setText(spanned.toString());
+
             mPhotoUrl = mCursor.getString(ArticleLoader.Query.PHOTO_URL);
             mAspectRatio = mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO);
             updateActivity();
